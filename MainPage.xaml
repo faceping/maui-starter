@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fp="clr-namespace:FacePing.Sdk.Maui;assembly=FacePing.Sdk.Maui"
+             x:Class="FaceCheck.MainPage"
+             Title="FaceCheck"
+             BackgroundColor="White"
+             Shell.NavBarIsVisible="False">
+  <Grid RowDefinitions="Auto,*,Auto" Padding="18,10,18,22" RowSpacing="12">
+
+    <!-- App bar: the name, and whether the phone has a network (the checks never need one) -->
+    <Grid ColumnDefinitions="*,Auto" Padding="2,6,2,0">
+      <Label Text="FaceCheck" FontSize="22" FontAttributes="Bold" TextColor="#0F172A" VerticalOptions="Center" />
+      <Border Grid.Column="1" x:Name="NetworkPill" StrokeThickness="0" Padding="10,4" VerticalOptions="Center" BackgroundColor="#EAECF0">
+        <Border.StrokeShape><RoundRectangle CornerRadius="8" /></Border.StrokeShape>
+        <Label x:Name="NetworkText" Text="Online" FontSize="13" FontAttributes="Bold" TextColor="#475569" />
+      </Border>
+    </Grid>
+
+    <!-- The camera, with the result card over its bottom edge -->
+    <Border Grid.Row="1" StrokeThickness="0" BackgroundColor="#0B1220">
+      <Border.StrokeShape><RoundRectangle CornerRadius="18" /></Border.StrokeShape>
+      <Grid>
+        <fp:FaceCameraView x:Name="Camera" />
+        <Border x:Name="ResultCard" StrokeThickness="0" BackgroundColor="#F5FFFFFF" Padding="14,10" Margin="12"
+                VerticalOptions="End" InputTransparent="True">
+          <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+          <VerticalStackLayout Spacing="2">
+            <Label x:Name="ResultTitle" Text="Look at the camera" FontSize="17" FontAttributes="Bold" TextColor="#0F172A" />
+            <Label x:Name="ResultNote" Text="Tap Enrol my face to start." FontSize="14" TextColor="#475569" />
+          </VerticalStackLayout>
+        </Border>
+      </Grid>
+    </Border>
+
+    <VerticalStackLayout Grid.Row="2" Spacing="10">
+      <Button x:Name="EnrolButton" Text="Enrol my face" Clicked="OnEnrol" HeightRequest="50" CornerRadius="12"
+              BackgroundColor="White" TextColor="#0F172A" BorderColor="#CBD5E1" BorderWidth="1" FontAttributes="Bold" />
+      <Button x:Name="VerifyButton" Text="Verify" Clicked="OnVerify" HeightRequest="50" CornerRadius="12"
+              BackgroundColor="#2563EB" TextColor="White" FontAttributes="Bold" IsEnabled="False" Opacity="0.45" />
+    </VerticalStackLayout>
+  </Grid>
+</ContentPage>
