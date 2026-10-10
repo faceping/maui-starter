@@ -34,7 +34,7 @@
     </Border>
 
     <VerticalStackLayout Grid.Row="2" Spacing="10">
-      <Button x:Name="EnrolButton" Text="Enrol my face" Clicked="OnEnrol" HeightRequest="50" CornerRadius="12"
+      <Button x:Name="EnrollButton" Text="Enrol my face" Clicked="OnEnroll" HeightRequest="50" CornerRadius="12"
               BackgroundColor="White" TextColor="#0F172A" BorderColor="#CBD5E1" BorderWidth="1" FontAttributes="Bold" />
       <Button x:Name="VerifyButton" Text="Verify" Clicked="OnVerify" HeightRequest="50" CornerRadius="12"
               BackgroundColor="#2563EB" TextColor="White" FontAttributes="Bold" IsEnabled="False" Opacity="0.45" />

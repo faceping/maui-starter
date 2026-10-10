@@ -28,16 +28,16 @@ public partial class MainPage : ContentPage
 		SetEnrolled(faceping.EnrolledIds.Contains("me"));
 	}
 
-	async void OnEnrol(object sender, EventArgs e)
+	async void OnEnroll(object sender, EventArgs e)
 	{
 		await Run(async () =>
 		{
 			Show("Hold still", "Taking the photo…", Ink);
 			Camera.GuideState = FaceGuideState.Working;
 			var photo = await Camera.CaptureAsync();
-			var result = await faceping.EnrolAsync("me", photo);
+			var result = await faceping.EnrollAsync("me", photo);
 			Camera.GuideState = FaceGuideState.Ready;
-			if (result.Outcome == EnrolOutcome.Enrolled)
+			if (result.Outcome == EnrollOutcome.Enrolled)
 			{
 				SetEnrolled(true);
 				Show("Enrolled", Offline ? "No network. Tap Verify." : "Now tap Verify.", Ink);
@@ -69,7 +69,7 @@ public partial class MainPage : ContentPage
 		if (busy)
 			return;
 		busy = true;
-		Enable(EnrolButton, false);
+		Enable(EnrollButton, false);
 		Enable(VerifyButton, false);
 		try
 		{
@@ -90,7 +90,7 @@ public partial class MainPage : ContentPage
 		finally
 		{
 			busy = false;
-			Enable(EnrolButton, true);
+			Enable(EnrollButton, true);
 			Enable(VerifyButton, faceping.EnrolledIds.Contains("me"));
 		}
 	}
@@ -105,7 +105,7 @@ public partial class MainPage : ContentPage
 	void SetEnrolled(bool enrolled)
 	{
 		Enable(VerifyButton, enrolled);
-		EnrolButton.Text = enrolled ? "Enrol again" : "Enrol my face";
+		EnrollButton.Text = enrolled ? "Enrol again" : "Enrol my face";
 	}
 
 	void Show(string title, string note, Color colour)
@@ -135,13 +135,13 @@ public partial class MainPage : ContentPage
 		_ => outcome.ToString()
 	};
 
-	static string Describe(EnrolOutcome outcome) => outcome switch
+	static string Describe(EnrollOutcome outcome) => outcome switch
 	{
-		EnrolOutcome.NoFace => "No face seen. Look at the camera.",
-		EnrolOutcome.MultipleFaces => "More than one face. Just you, please.",
-		EnrolOutcome.FaceTooSmall => "Move a little closer.",
-		EnrolOutcome.NotLive => "That looked like a photo or a screen.",
-		EnrolOutcome.LimitReached => "The sandbox is full on this phone.",
+		EnrollOutcome.NoFace => "No face seen. Look at the camera.",
+		EnrollOutcome.MultipleFaces => "More than one face. Just you, please.",
+		EnrollOutcome.FaceTooSmall => "Move a little closer.",
+		EnrollOutcome.NotLive => "That looked like a photo or a screen.",
+		EnrollOutcome.LimitReached => "The sandbox is full on this phone.",
 		_ => outcome.ToString()
 	};
 }

@@ -27,7 +27,7 @@ You need the [.NET 10 SDK](https://dotnet.microsoft.com/download) with the MAUI 
 |---|---|
 | `MauiProgram.cs` | Turns FacePing on with your sandbox key (`UseFacePing`). |
 | `MainPage.xaml` | The camera view (`FaceCameraView`) and the two buttons. |
-| `MainPage.xaml.cs` | `EnrolAsync` and `VerifyLiveAsync`, and what each result means. |
+| `MainPage.xaml.cs` | `EnrollAsync` and `VerifyLiveAsync`, and what each result means. |
 
 ## The sandbox
 
