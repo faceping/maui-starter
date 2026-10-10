@@ -108,10 +108,10 @@ public partial class MainPage : ContentPage
 		EnrollButton.Text = enrolled ? "Enrol again" : "Enrol my face";
 	}
 
-	void Show(string title, string note, Color colour)
+	void Show(string title, string note, Color color)
 	{
 		ResultTitle.Text = title;
-		ResultTitle.TextColor = colour;
+		ResultTitle.TextColor = color;
 		ResultNote.Text = note;
 	}
 
