@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<!-- Android 7+ and iOS 15+ (an iPhone, not the simulator: it has no front camera). -->
+		<!-- Android 7+ (64-bit phones) and iOS 15.1+ (an iPhone, not the simulator: it has no front camera). -->
 		<TargetFrameworks>net10.0-android</TargetFrameworks>
 		<TargetFrameworks Condition="!$([MSBuild]::IsOSPlatform('linux'))">$(TargetFrameworks);net10.0-ios</TargetFrameworks>
 
