@@ -87,6 +87,13 @@ public partial class MainPage : ContentPage
 			Camera.GuideState = FaceGuideState.Ready;
 			Show("Face check unavailable", ex.Message, Red);
 		}
+		catch (InvalidOperationException ex)
+		{
+			// For example the camera didn't deliver a picture, or enrolling on a check-in device (device token):
+			// devices get their people from the server.
+			Camera.GuideState = FaceGuideState.Ready;
+			Show("Try again", ex.Message, Red);
+		}
 		finally
 		{
 			busy = false;
