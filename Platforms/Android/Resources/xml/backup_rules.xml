@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The same for Android 11 and earlier: FacePing's face data stays on this phone. -->
+<full-backup-content>
+  <exclude domain="file" path="faceping/"/>
+  <exclude domain="sharedpref" path="ai.faceping.sdk.keys.xml"/>
+</full-backup-content>

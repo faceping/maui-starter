@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FacePing's face data stays on this phone: its keys never leave the Android Keystore, so a backed-up or transferred
+     copy couldn't be read. Leave it out of cloud backups and device-to-device transfers (Android 12 and later). -->
+<data-extraction-rules>
+  <cloud-backup>
+    <exclude domain="file" path="faceping/"/>
+    <exclude domain="sharedpref" path="ai.faceping.sdk.keys.xml"/>
+  </cloud-backup>
+  <device-transfer>
+    <exclude domain="file" path="faceping/"/>
+    <exclude domain="sharedpref" path="ai.faceping.sdk.keys.xml"/>
+  </device-transfer>
+</data-extraction-rules>
