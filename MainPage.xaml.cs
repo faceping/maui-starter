@@ -28,7 +28,7 @@ public partial class MainPage : ContentPage
 		SetEnrolled(faceping.EnrolledIds.Contains("me"));
 	}
 
-	async void OnEnroll(object sender, EventArgs e)
+	async void OnEnroll(object? sender, EventArgs e)
 	{
 		await Run(async () =>
 		{
@@ -49,7 +49,7 @@ public partial class MainPage : ContentPage
 		});
 	}
 
-	async void OnVerify(object sender, EventArgs e)
+	async void OnVerify(object? sender, EventArgs e)
 	{
 		await Run(async () =>
 		{
@@ -60,7 +60,7 @@ public partial class MainPage : ContentPage
 			if (result.IsMatch)
 				Show("Match", $"Live face · {time} · {(Offline ? "no network used" : "on the phone")}", Green);
 			else
-				Show(Title(result.Outcome), "Tap Verify to try again.", Red);
+				Show(TitleFor(result.Outcome), "Tap Verify to try again.", Red);
 		});
 	}
 
@@ -124,7 +124,7 @@ public partial class MainPage : ContentPage
 		NetworkPill.BackgroundColor = Color.FromArgb(Offline ? "#FFF4E5" : "#EAECF0");
 	}
 
-	static string Title(VerifyOutcome outcome) => outcome switch
+	static string TitleFor(VerifyOutcome outcome) => outcome switch
 	{
 		VerifyOutcome.NoMatch => "Not a match",
 		VerifyOutcome.NotEnrolled => "Not enrolled",
