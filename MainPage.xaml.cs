@@ -22,7 +22,7 @@ public partial class MainPage : ContentPage
 		ShowNetwork();
 		// A check-in device gets its people from the server: no enrolling here, and Verify opens once PersonId has synced.
 		EnrollButton.IsVisible = faceping.IsSandbox;
-		faceping.Synced += (_, _) => MainThread.BeginInvokeOnMainThread(() => SetEnrolled(faceping.EnrolledIds.Contains(PersonId)));
+		faceping.Synced += (_, sync) => MainThread.BeginInvokeOnMainThread(() => OnSynced(sync));
 	}
 
 	protected override async void OnAppearing()
@@ -115,6 +115,30 @@ public partial class MainPage : ContentPage
 	{
 		button.IsEnabled = on;
 		button.Opacity = on ? 1 : 0.45;
+	}
+
+	// After every sync: open Verify once PersonId is here, and on a check-in device say what the sync found.
+	void OnSynced(SyncResult sync)
+	{
+		var here = faceping.EnrolledIds.Contains(PersonId);
+		SetEnrolled(here);
+		if (faceping.IsSandbox)
+			return;
+		switch (sync.Status)
+		{
+			case SyncStatus.Revoked:
+				Show("Device token not valid", "It was revoked or mistyped, or its list was deleted. Add the device again and use the new token.", Red);
+				break;
+			case SyncStatus.Gone:
+				Show("List finished", "This list's faces have been deleted, so there's no one to check.", Ink);
+				break;
+			case SyncStatus.Unavailable:
+				Show("Couldn't sync", "No connection to FacePing. The people synced before still work until the lease runs out.", Ink);
+				break;
+			default:
+				Show($"{sync.Enrolled} people synced", here ? $"{PersonId} is here: tap Verify." : $"{PersonId} isn't on this list yet. Enrol them on your server, then reopen the app.", Ink);
+				break;
+		}
 	}
 
 	void SetEnrolled(bool enrolled)
