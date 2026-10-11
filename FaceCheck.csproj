@@ -58,7 +58,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="FacePing.Sdk.Maui" Version="1.0.0-preview.8" />
+		<PackageReference Include="FacePing.Sdk.Maui" Version="1.0.0-preview.10" />
 	</ItemGroup>
 
 </Project>
