@@ -147,6 +147,7 @@ public partial class MainPage : ContentPage
 		VerifyOutcome.LivenessFailed => "Not a live face",
 		VerifyOutcome.ChallengeFailed => "Head turn not seen",
 		VerifyOutcome.Expired => "Enrolment expired",
+		VerifyOutcome.LeaseExpired => "Sync needed",
 		_ => outcome.ToString()
 	};
 
