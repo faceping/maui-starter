@@ -6,6 +6,10 @@ public partial class MainPage : ContentPage
 {
 	static readonly Color Ink = Color.FromArgb("#0F172A"), Green = Color.FromArgb("#047857"), Red = Color.FromArgb("#B91C1C");
 
+	// Who this app enrols and checks. In the sandbox that's you ("me"). As a check-in device (a DeviceToken in
+	// MauiProgram.cs instead of the SandboxKey), set it to the personId you enrolled on your practice list.
+	const string PersonId = "me";
+
 	readonly IFacePing faceping;
 	bool busy;
 
@@ -16,16 +20,20 @@ public partial class MainPage : ContentPage
 		Camera.CameraFailed += (_, message) => Show("Camera unavailable", message, Ink);
 		Connectivity.ConnectivityChanged += (_, _) => MainThread.BeginInvokeOnMainThread(ShowNetwork);
 		ShowNetwork();
+		// A check-in device gets its people from the server: no enrolling here, and Verify opens once PersonId has synced.
+		EnrollButton.IsVisible = faceping.IsSandbox;
+		faceping.Synced += (_, _) => MainThread.BeginInvokeOnMainThread(() => SetEnrolled(faceping.EnrolledIds.Contains(PersonId)));
 	}
 
 	protected override async void OnAppearing()
 	{
 		base.OnAppearing();
-		// A face enrolled earlier may still be on the phone (sandbox faces are deleted 24 hours after enrolment).
+		// Activates the sandbox key (or, on a check-in device, downloads its list). A face enrolled earlier may still be on
+		// the phone (sandbox faces are deleted 24 hours after enrolment).
 		try { await faceping.SyncAsync(); }
-		catch (FacePingSetupException ex) { Show("Sandbox key problem", ex.Message, Red); }
+		catch (FacePingSetupException ex) { Show(faceping.IsSandbox ? "Sandbox key problem" : "Device token problem", ex.Message, Red); }
 		catch (FacePingModelException ex) { Show("Face check unavailable", ex.Message, Red); }
-		SetEnrolled(faceping.EnrolledIds.Contains("me"));
+		SetEnrolled(faceping.EnrolledIds.Contains(PersonId));
 	}
 
 	async void OnEnroll(object? sender, EventArgs e)
@@ -35,7 +43,7 @@ public partial class MainPage : ContentPage
 			Show("Hold still", "Taking the photo…", Ink);
 			Camera.GuideState = FaceGuideState.Working;
 			var photo = await Camera.CaptureAsync();
-			var result = await faceping.EnrollAsync("me", photo);
+			var result = await faceping.EnrollAsync(PersonId, photo);
 			Camera.GuideState = FaceGuideState.Ready;
 			if (result.Outcome == EnrollOutcome.Enrolled)
 			{
@@ -55,7 +63,7 @@ public partial class MainPage : ContentPage
 		{
 			Show("Turn your head", "Liveness check…", Ink);
 			// A live check: matches your face, asks you to turn your head (liveness), then matches again.
-			var result = await faceping.VerifyLiveAsync("me", Camera);
+			var result = await faceping.VerifyLiveAsync(PersonId, Camera);
 			var time = $"{result.Elapsed.TotalSeconds:0.00} s";
 			if (result.IsMatch)
 				Show("Match", $"Live face · {time} · {(Offline ? "no network used" : "on the phone")}", Green);
@@ -79,7 +87,7 @@ public partial class MainPage : ContentPage
 		{
 			// The sandbox key is missing or revoked, or the very first run had no connection.
 			Camera.GuideState = FaceGuideState.Ready;
-			Show("Sandbox key problem", ex.Message, Red);
+			Show(faceping.IsSandbox ? "Sandbox key problem" : "Device token problem", ex.Message, Red);
 		}
 		catch (FacePingModelException ex)
 		{
@@ -98,7 +106,7 @@ public partial class MainPage : ContentPage
 		{
 			busy = false;
 			Enable(EnrollButton, true);
-			Enable(VerifyButton, faceping.EnrolledIds.Contains("me"));
+			Enable(VerifyButton, faceping.EnrolledIds.Contains(PersonId));
 		}
 	}
 

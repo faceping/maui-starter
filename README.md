@@ -21,13 +21,24 @@ You need the [.NET 10 SDK](https://dotnet.microsoft.com/download) with the MAUI 
 
 4. Tap **Enrol my face**, then **Verify**: you should see **Match**. Now switch on airplane mode and tap **Verify** again.
 
+## Try it as a check-in device
+
+Once you've tried the server side with your sandbox key (a practice check-in list, an enrolment link, a device), this app can be the check-in device:
+
+1. In the dashboard, open your practice list's **Devices** tab and add a device (or call `POST /v1/lists/{listId}/devices`). Copy the `fpd_` token.
+2. In `MauiProgram.cs`, use it instead of the sandbox key: `.UseFacePing(o => o.DeviceToken = "fpd_…")`.
+3. In `MainPage.xaml.cs`, set `PersonId` to the `personId` you enrolled on the practice list (through an enrolment link or from your server).
+4. Run it. The app downloads the list, hides **Enrol** (a check-in device gets its people from the server) and opens **Verify** once that person is on the phone.
+
+See [Devices and offline sync](https://docs.faceping.ai/devices/).
+
 ## What's where
 
 | File | What it does |
 |---|---|
 | `MauiProgram.cs` | Turns FacePing on with your sandbox key (`UseFacePing`). |
 | `MainPage.xaml` | The camera view (`FaceCameraView`) and the two buttons. |
-| `MainPage.xaml.cs` | `EnrollAsync` and `VerifyLiveAsync`, and what each result means. |
+| `MainPage.xaml.cs` | `PersonId`, `EnrollAsync` and `VerifyLiveAsync`, and what each result means. |
 
 ## The sandbox
 
