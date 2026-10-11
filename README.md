@@ -2,7 +2,7 @@
 
 **FaceCheck**: a small .NET MAUI app that enrols your face and verifies it live, on the phone, with a head-turn liveness check. Switch on airplane mode and it still matches.
 
-It's the finished app from [Get started with .NET MAUI](https://docs.faceping.ai/start/maui/), built on [FacePing.Sdk.Maui](https://www.nuget.org/packages/FacePing.Sdk.Maui).
+It's a fuller version of the app you build in [Get started with .NET MAUI](https://docs.faceping.ai/start/maui/) (it also runs as a check-in device and shows what each sync found), built on [FacePing.Sdk.Maui](https://www.nuget.org/packages/FacePing.Sdk.Maui).
 
 ## Run it
 
